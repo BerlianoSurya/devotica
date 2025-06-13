@@ -1,0 +1,8 @@
+{
+  "LocaleSwitcher": {
+    "id": "🇲🇨",
+    "en": "🇺🇸",
+    "label": "bahasa",
+    "locale": "{locale, select, de {🇩🇪 Deutsch} en {🇺🇸 English} id {🇲🇨 Indo} other {Unbekannt}}"
+  }
+}
