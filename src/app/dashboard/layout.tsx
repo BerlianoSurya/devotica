@@ -4,6 +4,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import DashboardShell from "@/components/dashboard-shell";
 import { NextIntlClientProvider } from "next-intl";
 import { Metadata } from "next";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +21,13 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return null;
+  }
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={inter.className}>
@@ -29,7 +38,7 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <DashboardShell>{children}</DashboardShell>
+            <DashboardShell user={session.user}>{children}</DashboardShell>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "0.gravatar.com",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };

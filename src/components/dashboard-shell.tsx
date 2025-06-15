@@ -5,7 +5,17 @@ import { useTheme } from "next-themes";
 import Sidebar from "./sidebar";
 import TopNav from "./top-nav";
 
-export default function DashboardShell({ children }: { children: ReactNode }) {
+export default function DashboardShell({
+  children,
+  user,
+}: {
+  children: ReactNode;
+  user: {
+    name: string;
+    email?: string;
+    image?: string | null;
+  };
+}) {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -36,7 +46,11 @@ export default function DashboardShell({ children }: { children: ReactNode }) {
       <Sidebar isCollapsed={isCollapsed} />
       <div className="w-full flex flex-1 flex-col">
         <header className="h-16 border-b border-border">
-          <TopNav isCollapsed={isCollapsed} onToggleSidebar={toggleSidebar} />
+          <TopNav
+            isCollapsed={isCollapsed}
+            onToggleSidebar={toggleSidebar}
+            user={user}
+          />
         </header>
         <main className="flex-1 overflow-auto p-6 bg-background">
           {children}

@@ -15,9 +15,18 @@ import LocaleSwitcher from "./locale-switcher";
 interface TopNavProps {
   isCollapsed: boolean;
   onToggleSidebar: () => void;
+  user: {
+    name: string;
+    email?: string;
+    image?: string | null;
+  };
 }
 
-export default function TopNav({ isCollapsed, onToggleSidebar }: TopNavProps) {
+export default function TopNav({
+  isCollapsed,
+  user,
+  onToggleSidebar,
+}: TopNavProps) {
   return (
     <nav className="px-3 sm:px-6 flex items-center justify-between bg-background border-b border-border h-full">
       <div className="flex items-center gap-4">
@@ -38,7 +47,10 @@ export default function TopNav({ isCollapsed, onToggleSidebar }: TopNavProps) {
         <DropdownMenu>
           <DropdownMenuTrigger className="focus:outline-none">
             <Image
-              src="https://0.gravatar.com/avatar/0958046148db4f9ef731681465b50762d38362524b7f4a2c02c679fd94cc6cff?size=256&d=initials"
+              src={
+                user.image ||
+                "https://0.gravatar.com/avatar/0958046148db4f9ef731681465b50762d38362524b7f4a2c02c679fd94cc6cff?size=256&d=initials"
+              }
               alt="User avatar"
               width={28}
               height={28}
@@ -50,7 +62,13 @@ export default function TopNav({ isCollapsed, onToggleSidebar }: TopNavProps) {
             sideOffset={8}
             className="w-[280px] sm:w-80 bg-popover border-border rounded-lg shadow-lg"
           >
-            <Profile01 avatar="https://0.gravatar.com/avatar/0958046148db4f9ef731681465b50762d38362524b7f4a2c02c679fd94cc6cff?size=256&d=initials" />
+            <Profile01
+              avatar={
+                user.image ||
+                "https://0.gravatar.com/avatar/0958046148db4f9ef731681465b50762d38362524b7f4a2c02c679fd94cc6cff?size=256&d=initials"
+              }
+              name={user.name}
+            />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -2,8 +2,7 @@
 
 import type React from "react";
 
-import { Settings, HelpCircle, Menu, Church, ChevronDown } from "lucide-react";
-
+import { Menu, Church, ChevronDown } from "lucide-react";
 import { Home } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
@@ -11,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { prayers } from "./prayers-data";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { LogoutButton } from "./logout-button";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -175,9 +175,7 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
                 className="flex-shrink-0"
               />
               {!isCollapsed && (
-                <span className="text-lg font-semibold text-foreground">
-                  Catholic Prayers
-                </span>
+                <span className="text-xl font-bold text-primary">Devotica</span>
               )}
             </Link>
           </div>
@@ -207,10 +205,10 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
           </div>
 
           <div className="px-4 py-4 border-t border-border">
-            <div className={cn("space-y-1", isCollapsed && "space-y-2")}>
-              <NavItem href="#" icon={Settings}>
-                Logout
-              </NavItem>
+            <div className={cn("space-y-6", isCollapsed && "space-y-2")}>
+              <div className={cn("space-y-1", isCollapsed && "space-y-2")}>
+                <LogoutButton isCollapsed={isCollapsed} />
+              </div>
             </div>
           </div>
         </div>

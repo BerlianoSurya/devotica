@@ -61,7 +61,7 @@ export function Navbar() {
           <nav className="flex items-center space-x-6">
             <ThemeToggle />
             <Button asChild>
-              <Link href="/login">Sign In</Link>
+              <Link href="/login">Login</Link>
             </Button>
           </nav>
         </div>
