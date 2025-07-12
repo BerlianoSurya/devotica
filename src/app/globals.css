@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@plugin "@tailwindcss/typography";
 @source '../../*.{js,ts,jsx,tsx,mdx}';
 
 @custom-variant dark (&:is(.dark *));
@@ -85,6 +85,114 @@
     border-color: var(--color-gray-200, currentcolor);
   }
 }
+@utility click-ripple {
+  /* Click Effects */
+
+  /* Hover Effects */
+
+  /* Click Effect Classes */
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  &:active::before {
+    width: 300px;
+    height: 300px;
+    animation: ripple 0.6s ease-out;
+  }
+}
+
+@utility click-bounce {
+  &:active {
+    animation: bounce-click 0.3s ease-in-out;
+  }
+}
+
+@utility click-scale {
+  &:active {
+    animation: scale-click 0.2s ease-in-out;
+  }
+}
+
+@utility click-shake {
+  &:active {
+    animation: shake-click 0.5s ease-in-out;
+  }
+}
+
+@utility click-pulse {
+  &:active {
+    animation: pulse-click 0.6s ease-out;
+  }
+}
+
+@utility hover-lift {
+  /* Hover Effect Classes */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+@utility hover-glow {
+  &:hover {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+    transition: box-shadow 0.3s ease;
+  }
+}
+
+@utility hover-scale {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+@utility hover-rotate {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: rotate(2deg);
+  }
+}
+
+@utility hover-slide {
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateX(4px);
+  }
+}
+
+@utility hover-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  transition: background-position 0.6s ease;
+
+  &:hover {
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+}
 
 @layer base {
   :root {
@@ -140,5 +248,74 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  @keyframes ripple {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  @keyframes bounce-click {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.95);
+    }
+  }
+
+  @keyframes scale-click {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+  }
+
+  @keyframes shake-click {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-2px);
+    }
+    75% {
+      transform: translateX(2px);
+    }
+  }
+
+  @keyframes pulse-click {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+    }
+    70% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px rgba(139, 92, 246, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
   }
 }

@@ -1,14 +1,10 @@
 import { Button } from "@/components/ui/button";
-import {
-  Cross,
-  Quote,
-  Github,
-  Globe,
-  MonitorSmartphone,
-  CodeXml,
-} from "lucide-react";
+import { Quote, Github, Globe, MonitorSmartphone, CodeXml } from "lucide-react";
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
+import { CustomButton } from "@/components/custom-button";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 const quotes = [
   {
@@ -28,7 +24,40 @@ const quotes = [
     author: "St. Ignatius Loyola",
   },
 ];
-
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("appMetadata");
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  return {
+    metadataBase: new URL(baseUrl),
+    title: t("appName"),
+    description: t("appDescription"),
+    keywords: t("appKeywords"),
+    authors: [{ name: "Dionisius Berliano Surya Wijaya" }],
+    creator: "Dionisius Berliano Surya Wijaya",
+    publisher: "Dionisius Berliano Surya Wijaya",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
+    },
+    openGraph: {
+      type: "website",
+      url: baseUrl,
+      siteName: t("appName"),
+      title: t("appName"),
+      description: t("appDescription"),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("appName"),
+      description: t("appDescription"),
+      creator: "@berlianosurya9",
+      site: "@berlianosurya9",
+    },
+    category: "Religion & Spirituality",
+    classification: "Catholic Prayer Tracker Web App",
+  };
+}
 export default function LandingPage() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const { text, author } = quotes[randomIndex];
@@ -46,11 +75,7 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6 relative z-10">
             <div className="flex flex-col items-center space-y-6 text-center">
               <div className="space-y-4">
-                <div className="inline-flex items-center rounded-full border px-3 py-1 text-base sm:text-sm bg-primary/10 text-primary">
-                  <Cross className="mr-2 h-4 w-4" />
-                  Transform Your Prayer Life
-                </div>
-                <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl/none font-bold tracking-tighter">
+                <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl/none font-bold">
                   Deepen Your Faith Through{" "}
                   <span className="bg-gradient-to-br from-indigo-600 via-purple-500 to-fuchsia-700 bg-clip-text text-transparent">
                     Consistent Prayer
@@ -62,10 +87,29 @@ export default function LandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 my-7">
-                <Button size="lg" className="h-12 px-8 text-lg">
-                  Get Started
-                </Button>
+                <Link href="/login">
+                  <CustomButton
+                    hoverEffect="glow"
+                    clickEffect="pulse"
+                    size="lg"
+                    className="h-12 px-8 text-lg"
+                  >
+                    Get Started
+                  </CustomButton>
+                </Link>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="w-full py-16 bg-gradient-to-r from-primary/5 via-background to-secondary/5">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center text-center space-y-8">
+              <Quote className="h-12 w-12 text-primary" />
+              <blockquote className="text-2xl md:text-3xl lg:text-4xl font-medium text-foreground max-w-4xl">
+                “{text}”
+              </blockquote>
+              <cite className="text-lg text-muted-foreground">{author}</cite>
             </div>
           </div>
         </section>
@@ -108,28 +152,16 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-        <section className="w-full py-16 bg-gradient-to-r from-primary/5 via-background to-secondary/5">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center text-center space-y-8">
-              <Quote className="h-12 w-12 text-primary" />
-              <blockquote className="text-2xl md:text-3xl lg:text-4xl font-medium text-foreground max-w-4xl">
-                “{text}”
-              </blockquote>
-              <cite className="text-lg text-muted-foreground">{author}</cite>
-            </div>
-          </div>
-        </section>
       </main>
       <footer className="w-full border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            &copy; {new Date().getFullYear()} Devotica
+            &copy; {new Date().getFullYear()} Devotica.
           </p>
           <div className="flex items-center gap-4">
             <Button variant="ghost" asChild className="rounded-full w-10 h-10">
               <Link
-                href="https://github.com/shadcn-ui/ui"
+                href="https://github.com/BerlianoSurya/devotica"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm flex items-center gap-2 border border-muted-foreground/20 bg-transparent hover:bg-secondary hover:border-primary transition-colors"

@@ -44,7 +44,11 @@ export default function LocaleSwitcherSelect({
         >
           <SelectValue />
         </SelectTrigger>
-        <SelectContent align="end" className="min-w-32">
+        <SelectContent
+          align="end"
+          position="popper"
+          className="min-w-32 z-[9999]"
+        >
           {items.map((item) => (
             <SelectItem
               key={item.value}

@@ -1,16 +1,16 @@
 "use client";
 
 import type React from "react";
-
 import { Menu, Church, ChevronDown } from "lucide-react";
 import { Home } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { prayers } from "./prayers-data";
+import { prayers, idPrayers } from "./prayers-data";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { LogoutButton } from "./logout-button";
+import { useLocale, useTranslations } from "next-intl";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -18,14 +18,16 @@ interface SidebarProps {
 
 export default function Sidebar({ isCollapsed }: SidebarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isPrayersExpanded, setIsPrayersExpanded] = useState(false);
+  const [isPrayersExpanded, setIsPrayersExpanded] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("prayers");
 
   function handleNavigation() {
     setIsMobileMenuOpen(false);
   }
-
+  const mergedPrayers = locale === "id" ? [...prayers, ...idPrayers] : prayers;
   function NavItem({
     href,
     icon: Icon,
@@ -60,7 +62,7 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
                 isCollapsed ? "px-0 py-2 justify-center" : "px-3 py-2 text-sm",
                 isActive ||
                   (hasSubmenu &&
-                    prayers.some((prayer) => pathname === prayer.url))
+                    mergedPrayers.some((prayer) => pathname === prayer.url))
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:text-foreground hover:bg-accent"
               )}
@@ -92,7 +94,7 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
           </div>
           {!isCollapsed && isExpanded && (
             <div className="ml-6 mt-1 space-y-1">
-              {prayers.map((prayer) => {
+              {mergedPrayers.map((prayer) => {
                 const isSubActive = pathname === prayer.url;
                 return (
                   <Link
@@ -107,7 +109,7 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
                     )}
                   >
                     <prayer.icon className="h-3 w-3 mr-3 flex-shrink-0" />
-                    <span className="text-xs">{prayer.title}</span>
+                    <span className="text-xs">{t(`${prayer.id}.title`)}</span>
                   </Link>
                 );
               })}

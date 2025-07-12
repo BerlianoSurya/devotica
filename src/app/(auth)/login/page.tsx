@@ -38,8 +38,9 @@ export default function LoginPage() {
             onClick={() => redirect("/")}
             type="button"
             className={"w-full bg-accent text-primary"}
-            leftIcon={Undo2}
+            icon={<Undo2 />}
             variant="ghost"
+            hoverEffect="scale"
           >
             Back to home
           </CustomButton>

@@ -13,6 +13,8 @@ const alwaysAllowedRoutes = ["/"];
 export async function middleware(request: NextRequest) {
   const session = getSessionCookie(request);
   const pathName = request.nextUrl.pathname;
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathName);
 
   const isAuthRoute = authRoutes.includes(pathName);
   const isProtectedRoute = protectedRoutes.some((route) =>
@@ -24,7 +26,11 @@ export async function middleware(request: NextRequest) {
   if (session && isAuthRoute) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {

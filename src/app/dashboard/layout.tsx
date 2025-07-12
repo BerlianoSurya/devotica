@@ -6,21 +6,21 @@ import { NextIntlClientProvider } from "next-intl";
 import { Metadata } from "next";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { getLocale } from "next-intl/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Devotica Dashboard",
-  description: "Track your daily prayers, novenas, and rosaries with Devotica",
+  description: "Track your daily prayers with Devotica",
 };
 
 export default async function RootLayout({
   children,
-  params: { locale },
 }: {
   children: React.ReactNode;
-  params: { locale: string };
 }) {
+  const locale = await getLocale();
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -34,7 +34,7 @@ export default async function RootLayout({
         <NextIntlClientProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >

@@ -1,10 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CustomButton } from "@/components/custom-button";
 import { authClient } from "@/lib/auth-client";
-import { KeyRound } from "lucide-react"; // replace with proper icon if needed
+import { KeyRound } from "lucide-react";
 import { Toaster, toast } from "sonner";
 
 interface LoginWithGoogleProps {
@@ -13,11 +12,10 @@ interface LoginWithGoogleProps {
 }
 
 export function LoginWithGoogle({
-  label = "Login with Google",
+  label = "Continue with Google",
   className = "w-full bg-primary text-white",
 }: LoginWithGoogleProps) {
   const [pending, setPending] = useState(false);
-  const router = useRouter();
 
   const handleSignInWithGoogle = async () => {
     try {
@@ -44,9 +42,11 @@ export function LoginWithGoogle({
         loading={pending}
         type="button"
         className={className}
-        leftIcon={KeyRound}
+        icon={<KeyRound />}
         iconSize={20}
         size="lg"
+        hoverEffect="glow"
+        clickEffect="shake"
       >
         {label}
       </CustomButton>

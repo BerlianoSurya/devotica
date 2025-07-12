@@ -17,6 +17,7 @@ export default function Profile01({
   name = defaultProfile.name,
   avatar = defaultProfile.avatar,
 }: Partial<Profile01Props> = defaultProfile) {
+  const isFavoriteEnabled = process.env.NEXT_PUBLIC_FAVORITE_FLAG;
   return (
     <div className="w-full max-w-sm mx-auto">
       <div className="relative overflow-hidden rounded-2xl border border-border">
@@ -38,21 +39,21 @@ export default function Profile01({
               </h2>
             </div>
           </div>
-          <div className="h-px bg-border my-5" />
-
-          <Link
-            href="#"
-            className="flex items-center justify-between p-2 
+          {isFavoriteEnabled && (
+            <Link
+              href="#"
+              className="flex items-center justify-between p-2 
                                 hover:bg-accent
                                 rounded-lg transition-colors duration-200"
-          >
-            <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              <span className="text-sm font-medium text-popover-foreground">
-                Favorites
-              </span>
-            </div>
-          </Link>
+            >
+              <div className="flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                <span className="text-sm font-medium text-popover-foreground">
+                  Favorites
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>
