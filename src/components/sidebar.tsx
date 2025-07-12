@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
@@ -53,7 +54,7 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
           <div className="flex items-center">
             <Link
               href={href}
-              onClick={(e) => {
+              onClick={() => {
                 handleNavigation();
                 onClick?.();
               }}

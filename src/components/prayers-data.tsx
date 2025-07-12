@@ -6,6 +6,7 @@ export interface Prayer {
   description: string;
   category: string;
   duration: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: any;
   content: string;
   url: string;

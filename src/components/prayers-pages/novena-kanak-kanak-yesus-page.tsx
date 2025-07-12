@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
@@ -27,7 +28,6 @@ interface SacredHeartOfJesusStep {
 
 export function NovenaKanakKanakYesus() {
   const t = useTranslations("prayers.novena-kanak-kanak-yesus");
-  const b = useTranslations("buttons");
   const [currentStep, setCurrentStep] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -148,7 +148,7 @@ export function NovenaKanakKanakYesus() {
             <Button
               variant="outline"
               size="sm"
-              // onClick={() => router.back()}
+              onClick={() => router.back()}
               className="absolute left-0 flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />

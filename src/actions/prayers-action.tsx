@@ -1,7 +1,7 @@
 "use server";
-import { and, eq, not } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/db/drizzle";
-import { prayers, user, userPrayerLogs } from "@/db/schema";
+import { prayers, userPrayerLogs } from "@/db/schema";
 import { headers } from "next/headers";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";

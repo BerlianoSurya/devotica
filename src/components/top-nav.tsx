@@ -22,11 +22,7 @@ interface TopNavProps {
   };
 }
 
-export default function TopNav({
-  isCollapsed,
-  user,
-  onToggleSidebar,
-}: TopNavProps) {
+export default function TopNav({ user, onToggleSidebar }: TopNavProps) {
   return (
     <nav className="px-3 sm:px-6 flex items-center justify-between bg-background border-b border-border h-full">
       <div className="flex items-center gap-4">

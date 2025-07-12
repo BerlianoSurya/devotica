@@ -8,7 +8,6 @@ const protectedRoutes = [
   "/dashboard/prayers",
   "/dashboard/profile",
 ];
-const alwaysAllowedRoutes = ["/"];
 
 export async function middleware(request: NextRequest) {
   const session = getSessionCookie(request);
