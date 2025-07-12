@@ -71,7 +71,7 @@ export async function trackUserPrayer(prayer: string) {
         id: uuidv4(),
         userId: session.user.id,
         prayerId: prayer,
-        prayedAt: new Date(),
+        prayedAt: new Date().toISOString(),
       })
       .returning();
     revalidateTag("userPrayerLog");
