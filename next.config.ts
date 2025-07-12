@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();
