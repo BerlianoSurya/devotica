@@ -1,12 +1,8 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "../globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
-import { getLocale } from "next-intl/server";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Login to Devotica a Catholic Prayer Tracker",
@@ -18,26 +14,23 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const locale = await getLocale();
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-        <Script
-          data-goatcounter={process.env.GOATCOUNTER_URL}
-          data-goatcounter-settings='{"allow_local": true, "path": "/login"}'
-          async
-          src="//gc.zgo.at/count.js"
-          strategy="afterInteractive"
-        />
-      </body>
-    </html>
+    <>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+      </ThemeProvider>
+      <Script
+        data-goatcounter={process.env.GOATCOUNTER_URL}
+        data-goatcounter-settings='{"allow_local": true, "path": "/login"}'
+        async
+        src="//gc.zgo.at/count.js"
+        strategy="afterInteractive"
+      />
+    </>
   );
 }
