@@ -72,7 +72,7 @@ export function Navbar() {
               href="/"
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                path === "/" && "text-primary underline underline-offset-4"
+                path === "/" && "underline underline-offset-4 decoration-2"
               )}
             >
               Home
@@ -82,7 +82,7 @@ export function Navbar() {
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
                 path === "/prayers" &&
-                  "text-primary underline underline-offset-4"
+                  "underline underline-offset-4 decoration-2"
               )}
             >
               Prayers

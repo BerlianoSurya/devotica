@@ -1,0 +1,14 @@
+User-agent: *
+Crawl-delay: 1
+Sitemap: https://devotica.vercel.app/sitemap.xml
+
+Disallow: /api/
+Disallow: /dashboard/
+
+Allow: /prayers
+Allow: /prayers/rosary
+Allow: /prayers/st-bridget-15-prayers
+Allow: /prayers/sacred-heart-of-jesus
+Allow: /prayers/three-hail-mary-novena
+Allow: /prayers/novena-kanak-kanak-yesus
+Allow: /login

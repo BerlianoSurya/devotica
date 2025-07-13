@@ -12,7 +12,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("appMetadata");
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const baseUrl = process.env.SITE_URL || "http://localhost:3000";
+  console.log("BASE", baseUrl);
   return {
     metadataBase: new URL(baseUrl),
     title: t("appName"),
@@ -75,9 +76,7 @@ export default async function PrayersIndexPage() {
     "@type": "Blog",
     name: am("appName"),
     description: am("appDescription"),
-    url: `${
-      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-    }/prayers`,
+    url: `${process.env.SITE_URL || "http://localhost:3000"}/prayers`,
     publisher: {
       "@type": "Person",
       name: "Dionisius Berliano Surya Wijaya",
@@ -87,9 +86,9 @@ export default async function PrayersIndexPage() {
       "@type": "BlogPosting",
       headline: `${t(`${post.id}.prayersPageTitle`)}`,
       description: `${t(`${post.id}.prayersPageDescription`)}`,
-      url: `${
-        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-      }/prayers/${post.id}`,
+      url: `${process.env.SITE_URL || "http://localhost:3000"}/prayers/${
+        post.id
+      }`,
       author: {
         "@type": "Person",
         name: "Dionisius Berliano Surya Wijaya",

@@ -20,7 +20,7 @@ export async function generateMetadata({
   const t = await getTranslations("prayers");
   const { id } = await params;
   const post = getPrayerData(id);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
   if (!post) {
     return {
@@ -89,7 +89,7 @@ export default async function PrayerPage({ params }: PrayerPageProps) {
   const { id } = await params;
   const post = getPrayerData(id);
   const t = await getTranslations(`prayers.${id}`);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
   if (!post) {
     notFound();

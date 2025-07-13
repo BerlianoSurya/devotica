@@ -26,7 +26,7 @@ const quotes = [
 ];
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("appMetadata");
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const baseUrl = process.env.SITE_URL || "http://localhost:3000";
   return {
     metadataBase: new URL(baseUrl),
     title: t("appName"),
