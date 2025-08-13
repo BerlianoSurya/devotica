@@ -346,7 +346,7 @@ export function RosaryDashboard() {
     <>
       <div className=" bg-background">
         <header className="top-0 z-10 bg-background">
-          <div className="container mx-auto px-4 py-4 max-w-4xl">
+          <div className="container mx-auto px-4 py-4 ">
             <div className="relative flex items-center justify-center">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold underline underline-offset-8 max-w-[70%]">
                 {t("title")}
@@ -365,7 +365,7 @@ export function RosaryDashboard() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-6 max-w-4xl">
+        <main className="container mx-auto px-4 py-6 ">
           <div className="border rounded-lg p-4 sm:p-6 bg-card">
             {/* Mystery Selection */}
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -441,7 +441,7 @@ export function RosaryDashboard() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="h-50 sm:h-65 lg:h-70 overflow-y-auto">
+                <div className="h-80 md:h-90 lg:h-110 overflow-y-auto">
                   {paragraphs.map((paragraph, index) => (
                     <p
                       key={index}
@@ -518,7 +518,7 @@ export function RosaryDashboard() {
           isButtonClose={false}
         ></ErrorModal>
       </div>
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-8 ">
         {/* Mystery Overview */}
         <Card className="mt-8">
           <CardHeader>

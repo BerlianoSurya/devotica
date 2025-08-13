@@ -92,7 +92,7 @@ export function PrayerSteps({
   return (
     <div className="bg-background">
       <header className="top-0 z-10 bg-background">
-        <div className="container mx-auto px-4 py-4 max-w-4xl">
+        <div className="container mx-auto px-4 py-4">
           <div className="relative flex items-center justify-center">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold underline underline-offset-8 max-w-[70%] text-center">
               {title}
@@ -110,7 +110,7 @@ export function PrayerSteps({
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 max-w-4xl">
+      <main className="container mx-auto px-4 py-6">
         <div className="border rounded-lg p-4 sm:p-6 bg-card">
           {showProgress && (
             <div className="mb-6">
@@ -132,7 +132,7 @@ export function PrayerSteps({
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-60 sm:h-75 lg:h-85 overflow-y-auto">
+              <div className="h-78 md:h-90 lg:h-120 overflow-y-auto">
                 {paragraphs.map((paragraph, index) => (
                   <p
                     key={index}
