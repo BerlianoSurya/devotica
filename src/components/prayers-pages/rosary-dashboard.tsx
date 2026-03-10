@@ -37,16 +37,27 @@ type MysteryType = "joyful" | "sorrowful" | "glorious" | "luminous";
 
 interface RosaryStep {
   id: number;
-  type: "prayer" | "mystery" | "our_father" | "hail_mary" | "glory_be";
+  type:
+    | "prayer"
+    | "mystery"
+    | "our_father"
+    | "hail_mary"
+    | "glory_be"
+    | "praise"
+    | "fatima_prayer";
   title: string;
   content: string;
   count?: number;
+  advanceBead?: boolean;
 }
+
+type BeadType = "big" | "small";
 
 export function RosaryDashboard() {
   const t = useTranslations("prayers.rosary");
   const [selectedMystery, setSelectedMystery] = useState<MysteryType>("joyful");
   const [currentStep, setCurrentStep] = useState(0);
+  const [showBeadCounter, setShowBeadCounter] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -224,11 +235,29 @@ export function RosaryDashboard() {
       content: t("apostlesCreedText"),
     });
 
+    // First large bead above the crucifix
+    steps.push({
+      id: id++,
+      type: "glory_be",
+      title: t("gloryBe"),
+      content: t("gloryBeText"),
+      advanceBead: true,
+    });
+
+    steps.push({
+      id: id++,
+      type: "praise",
+      title: t("praise"),
+      content: t("praiseText"),
+      advanceBead: false,
+    });
+
     steps.push({
       id: id++,
       type: "our_father",
       title: t("ourFather"),
       content: t("ourFatherText"),
+      advanceBead: false,
     });
 
     steps.push({
@@ -236,6 +265,7 @@ export function RosaryDashboard() {
       type: "hail_mary",
       title: t("firstHailMary"),
       content: t("firstHailMaryText"),
+      advanceBead: true,
     });
 
     steps.push({
@@ -243,6 +273,7 @@ export function RosaryDashboard() {
       type: "hail_mary",
       title: t("secondHailMary"),
       content: t("secondHailMaryText"),
+      advanceBead: true,
     });
 
     steps.push({
@@ -250,18 +281,37 @@ export function RosaryDashboard() {
       type: "hail_mary",
       title: t("thirdHailMary"),
       content: t("thirdHailMaryText"),
-    });
-
-    steps.push({
-      id: id++,
-      type: "glory_be",
-      title: t("gloryBe"),
-      content: t("gloryBeText"),
+      advanceBead: true,
     });
 
     // 5 Decades
     const currentMysteries = mysteries[selectedMystery];
     for (let decade = 0; decade < 5; decade++) {
+      // Large bead before each decade
+      steps.push({
+        id: id++,
+        type: "glory_be",
+        title: t("gloryBe"),
+        content: t("gloryBeText"),
+        advanceBead: true,
+      });
+
+      steps.push({
+        id: id++,
+        type: "praise",
+        title: t("praise"),
+        content: t("praiseText"),
+        advanceBead: false,
+      });
+
+      steps.push({
+        id: id++,
+        type: "fatima_prayer",
+        title: t("fatimaPrayer"),
+        content: t("fatimaPrayerText"),
+        advanceBead: false,
+      });
+
       // Announce mystery
       steps.push({
         id: id++,
@@ -270,6 +320,7 @@ export function RosaryDashboard() {
           currentMysteries[decade].title
         }`,
         content: `${currentMysteries[decade].content}`,
+        advanceBead: false,
       });
 
       // Our Father
@@ -278,6 +329,7 @@ export function RosaryDashboard() {
         type: "our_father",
         title: t("ourFather"),
         content: t("ourFatherText"),
+        advanceBead: false,
       });
 
       // 10 Hail Marys
@@ -287,17 +339,35 @@ export function RosaryDashboard() {
           type: "hail_mary",
           title: `${t("hailMary")} ${i + 1}/10`,
           content: t("hailMaryText"),
+          advanceBead: true,
         });
       }
-
-      // Glory Be
-      steps.push({
-        id: id++,
-        type: "glory_be",
-        title: t("gloryBe"),
-        content: t("gloryBeText"),
-      });
     }
+
+    // After the fifth decade (center connector)
+    steps.push({
+      id: id++,
+      type: "glory_be",
+      title: t("gloryBe"),
+      content: t("gloryBeText"),
+      advanceBead: false,
+    });
+
+    steps.push({
+      id: id++,
+      type: "praise",
+      title: t("praise"),
+      content: t("praiseText"),
+      advanceBead: false,
+    });
+
+    steps.push({
+      id: id++,
+      type: "fatima_prayer",
+      title: t("fatimaPrayer"),
+      content: t("fatimaPrayerText"),
+      advanceBead: false,
+    });
 
     // Closing prayers
     steps.push({
@@ -305,13 +375,15 @@ export function RosaryDashboard() {
       type: "prayer",
       title: t("hailHolyQueen"),
       content: t("hailHolyQueenText"),
+      advanceBead: false,
     });
 
     steps.push({
       id: id++,
       type: "prayer",
-      title: t("finalPrayer"),
-      content: t("finalPrayerText"),
+      title: t("signOfCross"),
+      content: t("signOfCrossText"),
+      advanceBead: false,
     });
 
     return steps;
@@ -319,6 +391,81 @@ export function RosaryDashboard() {
 
   const steps = generateRosarySteps();
   const progress = ((currentStep + 1) / steps.length) * 100;
+  const buildRosaryBeads = (): BeadType[] => {
+    const beads: BeadType[] = [];
+    // Chain (from crucifix to medal): 1 big + 3 small
+    beads.push("big");
+    beads.push("small", "small", "small");
+
+    // Loop: 5 decades = 5 big + 50 small
+    // Start with a big bead, then 10 small, repeat 4 times, and end with 10 small.
+    beads.push("big");
+    for (let decade = 0; decade < 4; decade++) {
+      for (let i = 0; i < 10; i++) beads.push("small");
+      beads.push("big");
+    }
+    for (let i = 0; i < 10; i++) beads.push("small");
+    return beads;
+  };
+
+  const beads = buildRosaryBeads();
+
+  const getCurrentBeadIndex = () => {
+    let count = 0;
+    for (let i = 0; i <= currentStep; i++) {
+      if (steps[i].advanceBead) {
+        count += 1;
+      }
+    }
+    if (count === 0) return -1;
+    return Math.min(count - 1, beads.length - 1);
+  };
+
+  const currentBeadIndex = getCurrentBeadIndex();
+  const beadsCompleted = Math.max(currentBeadIndex + 1, 0);
+
+  const getBeadPositions = (total: number) => {
+    const chainCount = 4; // 1 big + 3 small
+    const loopCount = total - chainCount; // 55
+    const centerX = 60;
+    const centerY = 100;
+    const radiusX = 50;
+    const radiusY = 90;
+    const positions: { x: number; y: number }[] = [];
+
+    const bottomAngle = Math.PI / 2;
+    const bottomX = centerX;
+    const bottomY = centerY + radiusY;
+    const chainSpacing = 10;
+
+    // Chain beads (below the loop), ordered from crucifix upward
+    for (let i = chainCount - 1; i >= 0; i--) {
+      positions.push({
+        x: bottomX,
+        y: bottomY + (i + 1) * chainSpacing,
+      });
+    }
+
+    // Loop beads (round), start at the bottom point
+    const step = (Math.PI * 2) / loopCount;
+    for (let i = 0; i < loopCount; i++) {
+      const angle = bottomAngle + step * i;
+      const sin = Math.sin(angle);
+      const cos = Math.cos(angle);
+      positions.push({
+        x: centerX + radiusX * cos,
+        y: centerY + radiusY * sin,
+      });
+    }
+
+    const chainEndY = bottomY + chainCount * chainSpacing;
+    return { positions, chainEndY };
+  };
+
+  const { positions: beadPositions, chainEndY } = getBeadPositions(
+    beads.length,
+  );
+  const crossY = chainEndY + 8;
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -361,6 +508,54 @@ export function RosaryDashboard() {
                 <ArrowLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">Back</span>
               </Button>
+
+              <div className="absolute right-0 hidden sm:flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">
+                  {t("beadCounterLabel")}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowBeadCounter((prev) => !prev)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full border transition-colors ${
+                    showBeadCounter
+                      ? "bg-primary border-primary"
+                      : "bg-muted border-border"
+                  }`}
+                  aria-pressed={showBeadCounter}
+                  aria-label={t("beadCounterToggle")}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
+                      showBeadCounter ? "translate-x-5" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-3 flex justify-center sm:hidden">
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">
+                  {t("beadCounterLabel")}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowBeadCounter((prev) => !prev)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full border transition-colors ${
+                    showBeadCounter
+                      ? "bg-primary border-primary"
+                      : "bg-muted border-border"
+                  }`}
+                  aria-pressed={showBeadCounter}
+                  aria-label={t("beadCounterToggle")}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-background transition-transform ${
+                      showBeadCounter ? "translate-x-5" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+              </div>
             </div>
           </div>
         </header>
@@ -419,40 +614,131 @@ export function RosaryDashboard() {
               <Progress value={progress} className="h-2" />
             </div>
 
-            <Card className="mb-6">
-              <CardHeader className="">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl">
-                    {currentStepData?.title}
-                  </CardTitle>
-                  <Badge
-                    variant={
-                      currentStepData?.type === "mystery"
-                        ? "default"
-                        : currentStepData?.type === "our_father"
-                        ? "secondary"
-                        : currentStepData?.type === "hail_mary"
-                        ? "outline"
-                        : "secondary"
-                    }
-                  >
-                    {t(`stepTypes.${currentStepData?.type}`)}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80 md:h-90 lg:h-110 overflow-y-auto">
-                  {paragraphs.map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-sm sm:text-base leading-relaxed whitespace-pre-line pr-2  indent-8"
-                    >
-                      {paragraph}
+            <div
+              className={`mb-6 grid gap-4 ${
+                showBeadCounter ? "md:grid-cols-[220px_1fr]" : "md:grid-cols-1"
+              }`}
+            >
+              {showBeadCounter && (
+                <div className="border rounded-lg bg-background p-4 flex flex-col min-h-[420px]">
+                  <div className="mb-3">
+                    <p className="text-sm font-medium text-card-foreground">
+                      {t("beadCounterTitle")}
                     </p>
-                  ))}
+                    <p className="text-xs text-muted-foreground">
+                      {currentBeadIndex < 0
+                        ? t("beadCounterAtCrucifix")
+                        : t("beadCounterStatus", {
+                            current: currentBeadIndex + 1,
+                            total: beads.length,
+                          })}
+                    </p>
+                  </div>
+                  <svg
+                    viewBox="0 0 120 270"
+                    className="w-full flex-1"
+                    aria-label="Rosary beads"
+                    role="img"
+                  >
+                    {beadPositions.map((pos, index) => {
+                      const isPast = index < currentBeadIndex;
+                      const isCurrent = index === currentBeadIndex;
+                      const isBig = beads[index] === "big";
+                      const baseRadius = isBig ? 3.2 : 2.0;
+                      const radius = isCurrent ? baseRadius + 0.7 : baseRadius;
+                      const fill =
+                        isPast || isCurrent
+                          ? "hsl(var(--primary))"
+                          : "hsl(var(--muted-foreground))";
+                      const fillOpacity = isPast ? 0.7 : isCurrent ? 1 : 0.3;
+                      const stroke =
+                        isCurrent || isPast
+                          ? "hsl(var(--primary))"
+                          : "transparent";
+                      const strokeWidth = isCurrent ? 2.2 : isPast ? 1.2 : 0;
+
+                      return (
+                        <circle
+                          key={index}
+                          cx={pos.x}
+                          cy={pos.y}
+                          r={radius}
+                          fill={fill}
+                          fillOpacity={fillOpacity}
+                          stroke={stroke}
+                          strokeWidth={strokeWidth}
+                        />
+                      );
+                    })}
+                    <g transform={`translate(59, ${crossY})`}>
+                      <path
+                        d="
+                          M -1.2 1
+                          c 0 -1.2 0.8 -2 2 -2
+                          h 1.2
+                          c 1.2 0 2 0.8 2 2
+                          v 6
+                          h 6.5
+                          c 1.2 0 2 0.8 2 2
+                          v 1.2
+                          c 0 1.2 -0.8 2 -2 2
+                          h -6.5
+                          v 11
+                          c 0 1.2 -0.8 2 -2 2
+                          h -1.2
+                          c -1.2 0 -2 -0.8 -2 -2
+                          v -11
+                          h -6.5
+                          c -1.2 0 -2 -0.8 -2 -2
+                          v -1.2
+                          c 0 -1.2 0.8 -2 2 -2
+                          h 6.5
+                          v -6
+                          Z
+                        "
+                        fill="hsl(var(--muted-foreground))"
+                        opacity={currentBeadIndex < 0 ? 0.9 : 0.5}
+                      />
+                    </g>
+                  </svg>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+
+              <Card className="mb-0">
+                <CardHeader className="">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-xl">
+                      {currentStepData?.title}
+                    </CardTitle>
+                    <Badge
+                      variant={
+                        currentStepData?.type === "mystery"
+                          ? "default"
+                          : currentStepData?.type === "our_father"
+                            ? "secondary"
+                            : currentStepData?.type === "hail_mary"
+                              ? "outline"
+                              : "secondary"
+                      }
+                    >
+                      {t(`stepTypes.${currentStepData?.type}`)}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80 md:h-90 lg:h-110 overflow-y-auto">
+                    {paragraphs.map((paragraph, index) => (
+                      <p
+                        key={index}
+                        className="text-sm sm:text-base leading-relaxed whitespace-pre-line pr-2  indent-8"
+                      >
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between">
               <CustomButton
