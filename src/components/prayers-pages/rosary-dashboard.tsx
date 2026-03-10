@@ -106,8 +106,13 @@ export function RosaryDashboard() {
     startTransition(async () => {
       const res = await trackUserPrayer(`rosary`);
       if (!res.success) {
+        if (res.redirectTo) {
+          router.push(res.redirectTo);
+          return;
+        }
         setShowErrorModal(true);
         setErrorMessage(`${res.message}`);
+        return;
       }
       if (res.success) {
         toast.success("Your prayer is tracked");
@@ -422,7 +427,6 @@ export function RosaryDashboard() {
   };
 
   const currentBeadIndex = getCurrentBeadIndex();
-  const beadsCompleted = Math.max(currentBeadIndex + 1, 0);
 
   const getBeadPositions = (total: number) => {
     const chainCount = 4; // 1 big + 3 small
@@ -632,6 +636,11 @@ export function RosaryDashboard() {
                             current: currentBeadIndex + 1,
                             total: beads.length,
                           })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t("beadCounterCompleted", {
+                        count: Math.max(currentBeadIndex + 1, 0),
+                      })}
                     </p>
                   </div>
                   <svg

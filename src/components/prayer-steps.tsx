@@ -58,12 +58,16 @@ export function PrayerSteps({
     startTransition(async () => {
       const res = await trackUserPrayer(trackKey);
       if (!res.success) {
+        if (res.redirectTo) {
+          router.push(res.redirectTo);
+          return;
+        }
         setShowErrorModal(true);
         setErrorMessage(res.message);
-      } else {
-        toast.success("Your prayer is tracked");
-        resetFn();
+        return;
       }
+      toast.success("Your prayer is tracked");
+      resetFn();
     });
   };
 

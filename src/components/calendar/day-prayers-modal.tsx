@@ -71,7 +71,7 @@ export default function DayPrayersModal({
   const handleDeletePrayerLog = () => {
     startTransition(async () => {
       if (chooseDeleteId === "") {
-        return { message: "Id is required" };
+        return;
       }
 
       const deleted = await removeUserPrayerLog(chooseDeleteId);
@@ -190,7 +190,6 @@ export default function DayPrayersModal({
                     <div className="flex justify-center">
                       <AddPrayerManually
                         date={selectedDay.date}
-                        prayerLogs={prayerLogs}
                         setPrayerLogs={setPrayerLogs}
                         setIsExistTrackToggled={setIsNotExistTrackToggled}
                       />

@@ -18,12 +18,13 @@ export default function NavigationLink({
 }: NavigationLinkProps) {
   const currentPath = usePathname();
 
-  const cleanPath = (path: string) => {
-    const parts = path.split("/");
+  const cleanPath = (path: string | { pathname?: string | null }) => {
+    const pathString = typeof path === "string" ? path : path.pathname ?? "";
+    const parts = pathString.split("/");
     if (parts.length > 2 && parts[1]?.length === 2) {
       return "/" + parts.slice(2).join("/");
     }
-    return path;
+    return pathString;
   };
 
   const normalizedCurrent = cleanPath(currentPath);

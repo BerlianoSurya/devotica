@@ -210,9 +210,12 @@ const CustomButton = React.forwardRef<HTMLButtonElement, CustomButtonProps>(
         return <Loader2 className="animate-spin" size={spinnerSize} />;
       }
       if (icon) {
-        return React.cloneElement(icon as React.ReactElement, {
-          size: actualIconSize,
-        });
+        if (React.isValidElement(icon)) {
+          return React.cloneElement(icon as React.ReactElement<{ size?: number }>, {
+            size: actualIconSize,
+          });
+        }
+        return icon;
       }
       return null;
     };

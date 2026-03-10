@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 import ErrorModal from "./error-modal";
 import { AlertCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import type { UserPrayerLog } from "./calendar/types";
 
 export default function AddPrayerManually({
   setIsExistTrackToggled,
@@ -21,16 +22,7 @@ export default function AddPrayerManually({
 }: {
   setIsExistTrackToggled: React.Dispatch<React.SetStateAction<boolean>>;
   date: string;
-  setPrayerLogs: React.Dispatch<
-    React.SetStateAction<
-      {
-        id: string;
-        prayedAt: string;
-        prayerId: string;
-        prayerTitle: string;
-      }[]
-    >
-  >;
+  setPrayerLogs: React.Dispatch<React.SetStateAction<UserPrayerLog[]>>;
 }) {
   const [selectedPrayer, setSelectedPrayer] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -55,6 +47,7 @@ export default function AddPrayerManually({
           );
           const mappedLog = {
             id: result.newTrackedPrayer.id,
+            userId: result.newTrackedPrayer.userId,
             prayedAt: result.newTrackedPrayer.prayedAt,
             prayerId: result.newTrackedPrayer.prayerId,
             prayerTitle: selectedItem?.title || "",

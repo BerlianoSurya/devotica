@@ -11,7 +11,6 @@ import { memoize } from "nextjs-better-unstable-cache";
 import { revalidateTag } from "next/cache";
 import { UserPrayerLog } from "@/components/calendar/types";
 import { getRateLimitKey } from "@/lib/utils";
-import { NextResponse } from "next/server";
 
 interface GetUserPrayerLogParams {
   userId: string;
@@ -41,13 +40,35 @@ const readRateLimit = ENABLE_RATE_LIMITING
     })
   : null;
 
-export async function trackUserPrayer(prayer: string) {
+export interface TrackUserPrayerResult {
+  success: boolean;
+  message: string;
+  error?: string;
+  newTrackedPrayer?: {
+    id: string;
+    createdAt: Date | null;
+    updatedAt: Date;
+    userId: string;
+    prayerId: string;
+    prayedAt: string;
+  };
+  redirectTo?: string;
+}
+
+export async function trackUserPrayer(
+  prayer: string
+): Promise<TrackUserPrayerResult> {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session) {
-    return NextResponse.redirect("/login");
+    return {
+      success: false,
+      error: "unauthorized",
+      message: "You are not authenticated!",
+      redirectTo: "/login",
+    };
   }
 
   if (writeRateLimit) {
@@ -84,6 +105,7 @@ export async function trackUserPrayer(prayer: string) {
   } catch (error) {
     console.error(error);
     return {
+      success: false,
       error: "Database error",
       message: "Failed to track prayer",
     };

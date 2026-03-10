@@ -53,8 +53,13 @@ export function NovenaKanakKanakYesus() {
     startTransition(async () => {
       const res = await trackUserPrayer(`novena-kanak-kanak-yesus`);
       if (!res.success) {
+        if (res.redirectTo) {
+          router.push(res.redirectTo);
+          return;
+        }
         setShowErrorModal(true);
         setErrorMessage(`${res.message}`);
+        return;
       }
       if (res.success) {
         toast.success("Your prayer is tracked");
