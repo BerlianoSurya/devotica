@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ArrowRight } from "lucide-react";
-import { getAllPrayers } from "@/lib/coveredprayers";
+import { getAllIdPrayers, getAllPrayers } from "@/lib/coveredprayers";
 
 interface PrayerNavigationProps {
   currentSlug: string;
@@ -25,7 +25,7 @@ const categoryIcons = {
 };
 
 export function PrayerNavigation({ currentSlug }: PrayerNavigationProps) {
-  const allPosts = getAllPrayers();
+  const allPosts = [...getAllPrayers(), ...getAllIdPrayers()];
   const currentPost = allPosts.find((post) => post.id === currentSlug);
 
   return (

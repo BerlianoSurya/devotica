@@ -1,11 +1,12 @@
+"use server";
+
 import { marked } from "marked";
 import { JSDOM } from "jsdom";
 import DOMPurify from "dompurify";
-import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import { gfmHeadingId } from "marked-gfm-heading-id";
+import { getPrayerMessages } from "@/lib/prayer-content";
 
-const window = new JSDOM("").window;
-const purify = DOMPurify(window);
 marked.use(gfmHeadingId());
 
 interface MarkdownRendererProps {
@@ -13,8 +14,11 @@ interface MarkdownRendererProps {
 }
 
 export async function MarkdownRenderer({ prayerId }: MarkdownRendererProps) {
-  const t = await getTranslations(`prayers.${prayerId}`);
-  const rawMarkdown = t("prayersPageBody");
+  const window = new JSDOM("").window;
+  const purify = DOMPurify(window);
+  const locale = (await getLocale()) as "en" | "id";
+  const prayerMessages = await getPrayerMessages(prayerId, locale);
+  const rawMarkdown = prayerMessages?.prayersPageBody ?? "";
   const html = purify.sanitize(await marked(rawMarkdown));
   return (
     <div

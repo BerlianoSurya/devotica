@@ -310,6 +310,25 @@ The effectiveness of this novena is rooted in Catholic teaching about Mary's rol
 
 export const idPrayers: Prayer[] = [
   {
+    id: "novena-kepada-hati-kudus-yesus",
+    title: "Novena kepada Hati Kudus Yesus",
+    description:
+      "Novena kepada Hati Kudus Yesus adalah doa penuh harapan yang membawa setiap permohonan kepada Yesus melalui perantaraan Bunda Maria, sambil bersandar pada kasih dan kerahiman Hati Kudus-Nya.",
+    body: ``,
+    history: "",
+    keywords: [
+      "novena kepada hati kudus yesus",
+      "doa hati kudus yesus",
+      "novena yesus bahasa indonesia",
+      "hati kudus yesus",
+      "doa novena indonesia",
+      "doa permohonan katolik",
+      "devosi hati kudus yesus",
+      "doa katolik indonesia",
+    ],
+    category: "novena",
+  },
+  {
     id: "novena-kanak-kanak-yesus",
     title: "Novena Kanak Kanak Yesus",
     description: "",
@@ -326,6 +345,25 @@ export const idPrayers: Prayer[] = [
       "rosary guide",
     ],
     category: "prayer",
+  },
+  {
+    id: "st-jude-thaddeus",
+    title: "Novena Santo Yudas Tadeus",
+    description:
+      "Novena Santo Yudas Tadeus adalah sembilan hari doa kepada Santo Yudas Tadeus, rasul yang dipercaya membantu dalam masalah-masalah yang tampak tanpa harapan dan tidak ada jalan keluarnya.",
+    body: ``,
+    history: "",
+    keywords: [
+      "santo yudas tadeus",
+      "novena santo yudas",
+      "doa santo yudas",
+      "masalah tidak ada harapan",
+      "novena bahasa indonesia",
+      "doa novena",
+      "rasul santo yudas",
+      "devosi santo yudas",
+    ],
+    category: "novena",
   },
 ];
 

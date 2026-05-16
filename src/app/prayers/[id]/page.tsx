@@ -1,4 +1,8 @@
-import { getPrayerData, getAllPrayers } from "@/lib/coveredprayers";
+import {
+  getPrayerData,
+  getAllIdPrayers,
+  getAllPrayers,
+} from "@/lib/coveredprayers";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +10,8 @@ import { ArrowLeft } from "lucide-react";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import type { Metadata } from "next";
 import { PrayerNavigation } from "@/components/prayer-navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getPrayerMessages } from "@/lib/prayer-content";
 import { getCurrentPath } from "@/lib/get‑current‑path";
 import GoatCounterScript from "@/components/goat-counter-sc";
 
@@ -17,10 +22,11 @@ interface PrayerPageProps {
 export async function generateMetadata({
   params,
 }: PrayerPageProps): Promise<Metadata> {
-  const t = await getTranslations("prayers");
+  const locale = (await getLocale()) as "en" | "id";
   const { id } = await params;
   const post = getPrayerData(id);
   const siteUrl = process.env.SITE_URL || "http://localhost:3000";
+  const prayerMessages = await getPrayerMessages(id, locale);
 
   if (!post) {
     return {
@@ -32,12 +38,12 @@ export async function generateMetadata({
   const url = `${siteUrl}/prayers/${post.id}`;
 
   return {
-    title: `${t(`${post.id}.prayersPageTitle`)} | Devotica`,
-    description: `${t(`${post.id}.prayersPageDescription`)}`,
+    title: `${prayerMessages?.prayersPageTitle ?? post.title} | Devotica`,
+    description: prayerMessages?.prayersPageDescription ?? post.description,
     keywords: post.keywords.join(", "),
     openGraph: {
-      title: `${t(`${post.id}.prayersPageTitle`)} | Devotica`,
-      description: `${t(`${post.id}.prayersPageDescription`)}`,
+      title: `${prayerMessages?.prayersPageTitle ?? post.title} | Devotica`,
+      description: prayerMessages?.prayersPageDescription ?? post.description,
       type: "article",
       url,
       authors: "Dionisius Berliano Surya Wijaya",
@@ -45,8 +51,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${t(`${post.id}.prayersPageTitle`)} | Devotica`,
-      description: `${t(`${post.id}.prayersPageDescription`)}`,
+      title: `${prayerMessages?.prayersPageTitle ?? post.title} | Devotica`,
+      description: prayerMessages?.prayersPageDescription ?? post.description,
     },
     authors: [{ name: "Dionisius Berliano Surya Wijaya" }],
     creator: "Dionisius Berliano Surya Wijaya",
@@ -63,7 +69,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPrayers();
+  const posts = [...getAllPrayers(), ...getAllIdPrayers()];
   return posts.map((post) => ({
     id: post.id,
   }));
@@ -88,7 +94,9 @@ export default async function PrayerPage({ params }: PrayerPageProps) {
   const path = await getCurrentPath();
   const { id } = await params;
   const post = getPrayerData(id);
-  const t = await getTranslations(`prayers.${id}`);
+  const locale = (await getLocale()) as "en" | "id";
+  const prayerMessages = await getPrayerMessages(id, locale);
+  const buttons = await getTranslations("buttons");
   const siteUrl = process.env.SITE_URL || "http://localhost:3000";
 
   if (!post) {
@@ -98,7 +106,7 @@ export default async function PrayerPage({ params }: PrayerPageProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: `${t(`prayersPageTitle`)} | Devotica`,
+    headline: `${prayerMessages?.prayersPageTitle ?? post.title} | Devotica`,
     author: {
       "@type": "Person",
       name: "Dionisius Berliano Surya Wijaya",
@@ -135,7 +143,7 @@ export default async function PrayerPage({ params }: PrayerPageProps) {
                   className="inline-flex items-center text-sm text-muted-foreground hover:text-primary mb-8 transition-colors"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to Prayers Page
+                  {buttons("backPage")}
                 </Link>
 
                 <div className="space-y-6">
@@ -146,10 +154,10 @@ export default async function PrayerPage({ params }: PrayerPageProps) {
                   </div>
 
                   <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-                    {t(`prayersPageTitle`)}
+                    {prayerMessages?.prayersPageTitle ?? post.title}
                   </h1>
                   <p className="text-xl text-muted-foreground md:text-2xl indent-18 text-justify">
-                    {t(`prayersPageDescription`)}
+                    {prayerMessages?.prayersPageDescription ?? post.description}
                   </p>
                 </div>
               </div>

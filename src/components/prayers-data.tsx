@@ -64,6 +64,17 @@ export const prayers: Prayer[] = [
 
 export const idPrayers: Prayer[] = [
   {
+    id: "novena-kepada-hati-kudus-yesus",
+    title: "Novena kepada Hati Kudus Yesus",
+    description:
+      "Novena kepada Hati Kudus Yesus adalah doa penuh harapan untuk membawa setiap permohonan ke dalam kerahiman dan kasih Yesus melalui perantaraan Bunda Maria.",
+    category: "Novenas",
+    duration: "5-10 min",
+    icon: Cross,
+    content: "",
+    url: "/dashboard/prayers/novena-kepada-hati-kudus-yesus",
+  },
+  {
     id: "novena-kanak-kanak-yesus",
     title: "Novena Kanak Kanak Yesus",
     description:
@@ -73,6 +84,17 @@ export const idPrayers: Prayer[] = [
     icon: Cross,
     content: "",
     url: "/dashboard/prayers/novena-kanak-kanak-yesus",
+  },
+  {
+    id: "st-jude-thaddeus",
+    title: "Novena Santo Yudas Tadeus",
+    description:
+      "Novena Santo Yudas Tadeus adalah sembilan hari doa kepada Santo Yudas Tadeus, rasul yang dipercaya membantu dalam masalah-masalah yang tampak tanpa harapan dan tidak ada jalan keluarnya.",
+    category: "Novenas",
+    duration: "5-10 min",
+    icon: Cross,
+    content: "",
+    url: "/dashboard/prayers/st-jude-thaddeus",
   },
 ];
 
